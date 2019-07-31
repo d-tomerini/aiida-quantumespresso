@@ -11,12 +11,9 @@ Supported codes
 
 Inputs
 ------
-* **parent_calculation**, can either be a PW calculation to get the ground state on which to compute 
-  the phonons, or a PH calculation in case of restarts.
-  
-  Note: There are no direct links between calculations. The use_parent_calculation will set
-  a link to the RemoteFolder attached to that calculation. Alternatively, the method **use_parent_folder**
-  can be used to set this link directly.
+* **parent_folder**, can either be a :py:class:`~aiida.orm.nodes.data.remote.RemoteData`
+  to get the ground state on which to compute  the phonons, or a :py:class:`~aiida.orm.nodes.data.remote.RemoteData`
+  of a PH calculation in case of restarts.
   
 * **qpoints**, class :py:class:`KpointsData <aiida.orm.nodes.data.array.kpoints.KpointsData>`
   Reciprocal space points on which to build the dynamical matrices. Can either be 
@@ -32,7 +29,7 @@ Inputs
   
   A full list of variables and their meaning is found in the `ph.x documentation`_.
 
-  .. _ph.x documentation: http://www.quantum-espresso.org/wp-content/uploads/Doc/INPUT_PH.html
+  .. _ph.x documentation: https://www.quantum-espresso.org/Doc/INPUT_PH.html
 
   Following keywords are already taken care of by AiiDA::
     
@@ -51,11 +48,11 @@ Inputs
     
     *  **'PARENT_CALC_OUT_SUBFOLDER'**: string. The subfolder of the parent 
        scratch to be copied in the new scratch.
-    *  **'PREPARE_FOR_D3'**: boolean. If True, more files are created in 
+    *  **'PREPARE_FOR_D3'**: boolean. If ``True``, more files are created in 
        preparation of the calculation of a D3 calculation.
     *  **'NAMELISTS'**: list of strings. Specify all the list of Namelists to be 
        printed in the input file.
-    *  **'PARENT_FOLDER_SYMLINK'**: boolean # If True, create a symlnk to the scratch 
+    *  **'PARENT_FOLDER_SYMLINK'**: boolean. If True, it creates a symlnk to the scratch 
        of the parent folder, otherwise the folder is copied (default: False)
     *  **'CMDLINE'**: list of strings. parameters to be put after the executable and before the input file. 
        Example: ["-npool","4"] will produce `ph.x -npool 4 < aiida.in`
@@ -65,18 +62,18 @@ Inputs
 Outputs
 -------
 There are several output nodes that can be created by the plugin, according to the calculation details.
-All output nodes can be accessed with the ``calculation.out`` method.
+All output nodes can be accessed with the ``calculation.outputs`` method.
 
-* output_parameters :py:class:`Dict <aiida.orm.nodes.data.dict.Dict>`
-  Contains small properties. Example: dielectric constant, 
+* output_parameters: a :py:class:`Dict <aiida.orm.nodes.data.dict.Dict>` dictionary. that 
+  contains 'small' properties, for example dielectric constant and 
   warnings (possible error messages generated in the run).
-  ``calculation.outputs.output_parameters`` can also be accessed by the ``calculation.res`` shortcut.
+  The output_parameters can also be accessed by the ``calculation.res`` shortcut.
   Furthermore, various ``dynamical_matrix_*`` keys are created, each is a dictionary containing
   the keys ``q_point`` and ``frequencies``.
 
 Errors
 ------
 Errors of the parsing are reported in the log of the calculation (accessible 
-with the ``verdi calculation logshow`` command). 
-Moreover, they are stored in the Dict under the key ``warnings``, and are
+with the ``verdi process report <PROCESS>`` command). 
+Moreover, they are stored in the ``Dict`` under the key ``warnings``, and are
 accessible with ``Calculation.res.warnings``.

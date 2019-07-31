@@ -7,8 +7,8 @@ Car-Parrinello
    :maxdepth: 2
    
 This chapter will teach you how to set up a Car-Parrinello (CP)
-calculation as implemented in the Quantum Espresso distribution.
-Again, AiiDA is not meant to teach you how to use a Quantum-Espresso code,
+calculation as implemented in the Quantum ESPRESSO distribution.
+Again, AiiDA is not meant to teach you how to use a Quantum ESPRESSO code:
 it is assumed that you already know CP.
 
 It is recommended that you first learn how to launch a PWscf calculation
@@ -16,7 +16,7 @@ before proceeding in this tutorial (see :ref:`my-ref-to-pw-tutorial`), since
 here we will only emphasize the differences with respect to launching a PW 
 calculation.
 
-We want to setup a CP run of a 5 atom cell of BaTiO3.
+We want to setup a CP run of a 5 atom cell of BaTiO\ :sub:`3`\.
 The input file that we should create is more or less this one::
 
   &CONTROL
@@ -81,7 +81,8 @@ the database::
   codename = 'my_cp'
   code = Code.get_from_string(codename)
 
-Then create the StructureData with the structure, and a Dict 
+Then create the ``StructureData`` with the structure, and a 
+:py:class:`Dict <aiida.orm.nodes.data.dict.Dict>`
 node for the inputs. This time, of course, you have to specify the correct
 variables for a ``cp.x`` calculation::
 
@@ -125,39 +126,31 @@ variables for a ``cp.x`` calculation::
                 },
             'IONS': {
                 'ion_dynamics': 'none',
-            }}).store()
+            }})
 
-We then create a new calculation with the proper settings::
+We then build a new calculation with the proper settings::
   
-  calc = code.new_calc()
-  calc.set_option('max_wallclock_seconds', 30*60) # 30 min
-  calc.set_option('resources', {"num_machines": 1, "num_mpiprocs_per_machine": 16})
+  builder = code.get_builder()
+  builder.metadata.options.resources = {"num_machines": 1, "num_mpiprocs_per_machine": 16}
+  builder.metadata.options.max_wallclock_seconds = 30*60 # 30 minutes
 
-And we link the input data to the calculation
-(and therefore set the links in the database). The main difference
-here is that CP does not support k-points, so you should not (and cannot)
-link any kpoint as input::
+And we link the input data to the calculation.
+The main difference with pw here is that CP does not support k-points, so you should not (and cannot)
+link any k-point as input::
 
-  calc.use_structure(s)
-  calc.use_code(code)
-  calc.use_parameters(parameters)
+  builder.structure = s
+  builder.parameters = parameters
   
 Finally, load the proper pseudopotentials using
 e.g. a pseudopotential family (see :ref:`my-ref-to-pseudo-tutorial`)::
   
   pseudo_family = 'lda_pslib'
-  calc.use_pseudos_from_family(pseudo_family)
+  from aiida.orm.nodes.data.upf import get_pseudos_from_structure
+  builder.pseudos = get_pseudos_from_structure(s, pseudo_family)
 
-and store everything and submit::
+We can now launch the calculation (``run`` or ``submit`` it): ::
 
-  calc.store_all()
-  calc.submit()
+  from aiida.engine import submit
+  calc=submit(builder)
 
-And now, the calculation will be executed and saved in the database automatically.
-
-
-Exception tolerant code
------------------------
-You can find a more sophisticated example, that checks the possible exceptions
-and prints nice error messages inside your AiiDA folder, under
-``examples/submission/quantumespresso/test_cp.py``.
+And now, the calculation will be executed and saved in the database.

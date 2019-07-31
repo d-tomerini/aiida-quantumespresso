@@ -3,7 +3,7 @@ CP
 
 Description
 -----------
-Use the plugin to support inputs of Quantum Espresso cp.x executable.
+Use the plugin to support inputs of Quantum ESPRESSO cp.x executable.
 Note that most of the options are the same of the pw.x plugin, so refer to 
 :doc:`that page <pw>` for more details.
 
@@ -16,19 +16,23 @@ Inputs
 * **pseudo**, class :py:class:`UpfData <aiida.orm.nodes.data.upf.UpfData>`
   One pseudopotential file per atomic species.
   
-  Alternatively, pseudo for every atomic species can be set with the **use_pseudos_from_family**
-  method, if a family of pseudopotentials has been installed..
+  If a pseudo potential family is uploaded, the :py:func:`~aiida.orm.nodes.data.upf.get_pseudos_from_structure` 
+  function can be used to automatically get the mapping of ``UpfData`` nodes for each kind in the 
+  StructureData one wants to use.
   
 * **parameters**, class :py:class:`Dict <aiida.orm.nodes.data.dict.Dict>`
   Input parameters of cp.x, as a nested dictionary, mapping the input of QE.
   Example::
     
-      {"ELECTRONS":{"ecutwfc":"30","ecutrho":"100"},
+      {"ELECTRONS":{
+        "ecutwfc":"30",
+        "ecutrho":"100"
+        }
       }
   
   A full list of variables and their meaning is found in the `cp.x documentation`_.
 
-  .. _cp.x documentation: http://www.quantum-espresso.org/wp-content/uploads/Doc/INPUT_CP.html
+  .. _cp.x documentation: http://www.quantum-espresso.org/Doc/INPUT_CP.html
 
   Following keywords, related to the structure or to the file paths, are already taken care of by AiiDA::
     
@@ -77,6 +81,6 @@ All output nodes can be accessed with the ``calculation.out`` method.
 Errors
 ------
 Errors of the parsing are reported in the log of the calculation (accessible 
-with the ``verdi calculation logshow`` command). 
-Moreover, they are stored in the Dict under the key ``warnings``, and are
+with the ``verdi process report <CALC>`` command). 
+Moreover, they are stored in the output_parameters Dict under the key ``warnings``, and are
 accessible with ``Calculation.res.warnings``.

@@ -711,19 +711,17 @@ To continue the tutorial with the ``ph.x`` phonon code of Quantum ESPRESSO,
 continue here: :ref:`my-ref-to-ph-tutorial`.
 
 
-
-
 Script: source code
 -------------------
 
-In this section you'll find two scripts that do what explained in the tutorial.
-The compact is a script with a minimal configuration required.
-You can copy and paste it (or download it), modify the two strings ``codename``
+In this section you'll find a scripts that do what explained in the tutorial.
+
+You can download it, modify the two strings ``codename``
 and ``pseudo_family`` with the correct values, and execute it with::
 
   python pw_short_example.py
 
-(It requires to have one family of pseudopotentials configured).
+It requires to have one family of pseudopotentials configured.
 
 Download: :download:`this example script <pw_short_example.py>`
 

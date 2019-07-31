@@ -51,11 +51,6 @@ Constants
 .. automodule:: aiida_quantumespresso.parsers.constants
    :members:
 
-Dos Parser
-----------
-
-.. automodule:: aiida_quantumespresso.parsers.dos
-   :members:
 
 Projwfc Parser
 --------------
