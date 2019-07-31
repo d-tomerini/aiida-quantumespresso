@@ -1,7 +1,7 @@
 .. _my-ref-to-pw-tutorial:
 
 Running a PWscf calculation
-=============================================
+===================================
 
 .. toctree::
    :maxdepth: 2
@@ -175,8 +175,8 @@ The plugin requires at least the presence of:
 
 Other inputs are optional, for example:
 
-    - *metadata* is a :py:class:`Dict <aiida.orm.nodes.data.dict.Dict>` dictionary of inputs that modify slightly the behaviour of a processes;
-    - *options* is a :py:class:`Dict <aiida.orm.nodes.data.dict.Dict>` dictionary that provides access to more advanced, non-default feature of the code.
+    - *metadata* is a dictionary of inputs that modify slightly the behaviour of a processes;
+    - *settings* is a :py:class:`Dict <aiida.orm.nodes.data.dict.Dict>` dictionary that provides access to more advanced, non-default feature of the code.
 
 
 
@@ -184,7 +184,7 @@ Other inputs are optional, for example:
 Structure
 ---------
 
-We now proceed in setting up the structure. 
+We now proceed in setting up the structure. N:
 
 .. note:: Here we discuss only the main features of structures in AiiDA, needed
     to run a Quantum ESPRESSO PW calculation.
@@ -201,7 +201,7 @@ needs to be converted into an AiiDA Structure, see the note at the end of the se
 We first have to load the abstract object class that describes a structure. 
 We do it in the following way: we load the ``DataFactory``, which is a tool to load the classes
 by their name, and then call ``StructureData`` the abstract class that we loaded. 
-(N: it is not yet a class instance! 
+(N.B.: it is not yet a class instance! 
 If you are not familiar with the terminology of object programming,
 you can look at `Wikipedia <http://en.wikipedia.org/wiki/Object_(computer_science)>`_ for
 their short explanation: in common speech that one refers to *a* file as a class,
@@ -367,7 +367,7 @@ a few errors::
 After running the ``input_helper`` method, you will get an exception with a message
 similar to the following::
 
-  Quantum ESPRESSOInputValidationError: Errors! 4 issues found:
+  QEInputValidationError: Errors! 4 issues found:
   * You should not provide explicitly keyword 'cosab'.
   * Problem parsing keyword convthr. Maybe you wanted to specify one of these: conv_thr, nconstr, forc_conv_thr?
   * Expected a boolean for keyword nosym, found <type 'int'> instead
@@ -522,7 +522,7 @@ and 3 in the ultimate input file, respectively.
 
 
 K-points mesh
---------------
+-------------
 
 The k-points have to be saved in another kind of data, namely ``KpointsData``::
                 
@@ -563,7 +563,7 @@ pseudopotential files, one for each element of the structure.
    and how to handle and instal pseudopotential families, you can find more 
    information in :ref:`my-ref-to-pseudo-tutorial`.
 
-The ``builder.pseudo`` input is a dictionary, where the keys are the names of 
+The ``builder.pseudos`` input is a dictionary, where the keys are the names of 
 the elements, and the values are the ``UpfData`` objects stored in the database.
 
 It is possible to specify manually which pseudopotential files to use
@@ -597,7 +597,7 @@ Comments are a special set of properties of the calculation, in the sense
 that it is one of the few properties that can be changed, even after
 the calculation has run.
 
-These properties can be set in the ``metadata.options`` input of the calculation,
+These properties can be set in the ``metadata`` input of the calculation,
 with a *label* (a short description) and *description* (longer) ::
 
     builder.metadata.label = 'My generic title'
@@ -608,7 +608,7 @@ with a *label* (a short description) and *description* (longer) ::
    you can explore the available options
 
 Calculation resources
------------------------
+---------------------
 
 General options that are independent on  the code or the plugin
 are grouped under  ``builder.metadata.options``.
@@ -626,7 +626,7 @@ More options are available, and can be explored by expanding
 
 
 Launching the calculation
-------------------------
+-------------------------
 
 
 If we are satisfied with what you created, it is time to attach all the required inputs 
@@ -653,13 +653,13 @@ To run your calculation, you can execute: ::
     results = run(builder)
 
 where the ``results`` variable will contain  a dictionary containing all the nodes that were produced as output.
-Alternatively, it is possible to use either ``run_get_node`` or ``run_get_pk`` to retrive more information 
+Alternatively, it is possible to use either ``run.get_node`` or ``run.get_pk`` methods to retrive more information 
 about the calculation node: ::
 
     
-    from aiida.engine import run_get_node, run_get_pk
-    result, node = run_get_node(builder)
-    result, pk = run_get_pk(builder) 
+    from aiida.engine import run
+    result, node = run.get_node(builder)
+    result, pk = run.get_pk(builder) 
 
 where ``pk`` and ``node`` will contain, respectively, the ``node`` object of the calculation or its ``pk``.
 
@@ -736,7 +736,7 @@ to :ref:`this section<pw-advanced-features>`
 in the pw.x input plugin documentation.
 
 Importing previously run Quantum ESPRESSO pw.x calculations: ``PwImmigrant``
-------------------------------------------------------------------------
+----------------------------------------------------------------------------
 
 Once you start using AiiDA to run simulations, we believe that you will find it
 so convenient that you will use it for all your calculations. 
