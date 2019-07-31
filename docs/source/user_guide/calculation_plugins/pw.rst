@@ -48,6 +48,7 @@ The pseudos variable will now be a dictionary of the form: ::
     pseudos = {
         'Ga': UpfData(),
         'As': UpfData()
+    }
     
 This can then be used directly in the process builder of for example a ``PwCalculation``.  ::
 
@@ -181,7 +182,7 @@ Quantum Espresso namelists, additional parameters can be specified in the 'setti
 After having defined the content of ``settings_dict``, 
 you can use it as an input by adding it to the process builder::
 
-    builder.settings(Dict(dict=settings_dict))
+    builder.settings = Dict(dict=settings_dict)
 
 The different options are described below.
 

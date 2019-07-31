@@ -184,7 +184,7 @@ Other inputs are optional, for example:
 Structure
 ---------
 
-We now proceed in setting up the structure. N:
+We now proceed in setting up the structure.
 
 .. note:: Here we discuss only the main features of structures in AiiDA, needed
     to run a Quantum ESPRESSO PW calculation.
@@ -201,7 +201,7 @@ needs to be converted into an AiiDA Structure, see the note at the end of the se
 We first have to load the abstract object class that describes a structure. 
 We do it in the following way: we load the ``DataFactory``, which is a tool to load the classes
 by their name, and then call ``StructureData`` the abstract class that we loaded. 
-(N.B.: it is not yet a class instance! 
+Note that it is not yet a class instance! 
 If you are not familiar with the terminology of object programming,
 you can look at `Wikipedia <http://en.wikipedia.org/wiki/Object_(computer_science)>`_ for
 their short explanation: in common speech that one refers to *a* file as a class,
