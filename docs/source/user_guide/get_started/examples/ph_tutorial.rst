@@ -168,15 +168,13 @@ for more information) ::
 
 
 
-Script: source code
--------------------
+Script:  source code
+--------------------
 
-In this section you'll find a scripts that do what explained in the tutorial.
-
-You can download it, modify the two strings ``codename``
-and ``pw_calc_id`` with the correct values, and execute it with::
+You can download the script to run a ph calculation in AiiDA, 
+modify the two strings ``codename`` and ``pw_calc_id`` with the correct values,
+and execute it with::
 
   python ph_short_example.py
-
 
 Download: :download:`this example script <ph_short_example.py>`

@@ -3,64 +3,37 @@
 Projwfc
 =======
 
-.. note:: The Quantum Espresso Projwfc plugin referenced below is available in
-          the EPFL version.
-
 .. toctree::
    :maxdepth: 2
 
 
-This chapter will show how to launch a single Projwfc (``projwfc.x``) calculation. It assumes you already familiar with the underlying code as well
-as how to use basic features of AiiDA. This tutorial assumes you are at least familiar with the concepts introduced during the :ref:`my-ref-to-ph-tutorial`, specifically you should be familiar with using a parent calculation.
+This chapter will show how to launch a single Projwfc (``projwfc.x``) calculation.
+It assumes you already familiar with the underlying code as well
+as how to use basic features of AiiDA.
+This tutorial assumes you are at least familiar
+with the concepts introduced in the :ref:`my-ref-to-ph-tutorial` section,
+specifically you should be familiar with using a parent calculation.
 
-This section is intentially left short, as there is really nothing new in using projwfc calculations relative to ph calculations. Simply adapt the
-script below to suit your needs, refer to the quantum espresso documentation.
+This section is intentially left short, as there is really nothing new
+in using projwfc calculations relative to ph calculations.
+Simply adapt the script below to suit your needs,
+and refer to the Quantum ESPRESSO documentation.
+for more information.
 
 Script to execute
 -----------------
 
 This is the script described in the tutorial above. You can use it, just
-remember to customize it using the right parent_id,
+remember to customize it using the right ``parent_id``,
 the code, and the proper scheduler info.
 
-::
+Script: source code
+----------------------------
 
-    #!/usr/bin/env python
-    from aiida import load_dbenv
-    load_dbenv()
+You can download the script to run a projwfc calculation in AiiDA, 
+modify the two strings ``codename`` and ``parent_id`` with the correct values,
+and execute it with::
 
-    from aiida.orm import Code
-    from aiida.plugins import CalculationFactory, DataFactory
+  python projwfc_short_example.py
 
-    #####################
-    # ADAPT TO YOUR NEEDS
-    parent_id = 6
-    codename = 'my-projwfc.x'
-    #####################
-
-    code = Code.get_from_string(codename)
-
-    Dict = DataFactory('dict')
-    parameters = Dict(dict={
-        'PROJWFC': {
-            'DeltaE' : 0.2,
-            'ngauss' : 1,
-            'degauss' : 0.02
-        }})
-
-    QEPwCalc = CalculationFactory('quantumespresso.projwfc')
-    parentcalc = load_node(parent_id)
-
-    calc = code.new_calc()
-    calc.set_option('max_wallclock_seconds', 30*60) # 30 min
-    calc.set_option('resources', {"num_machines": 1})
-
-    calc.use_parameters(parameters)
-    calc.use_code(code)
-    calc.use_parent_calculation(parentcalc)
-
-    calc.store_all()
-    print "created calculation with PK={}".format(calc.pk)
-    calc.submit()
-
-
+Download: :download:`this example script <projwfc_short_example.py>`

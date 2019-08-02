@@ -3,14 +3,15 @@ Projwfc
 
 Description
 -----------
-Use the plugin to support inputs of Quantum Espresso projwfc.x executable. Computes the
-projections of atomic orbitals, :math:`|g_i>` onto bloch wavefunctions :math:`|\psi_{nk}>`, that is
+Use the plugin to support inputs of Quantum ESPRESSO projwfc.x executable. Computes the
+projections of atomic orbitals, :math:`|g_i>` onto Bloch wavefunctions :math:`|\psi_{nk}>`, that is
 :math:`<g_i|\psi_{nk}>`.
-Also computes the DOS as a function of energy, and the PDOS for each :math:`|g_i>`. The :math:`|g_i>` orbitals
-are found using the PseudoPotential used for the PW calculation.
+Also computes the density of states (DOS) as a function of energy,
+and the projected density of states (PDOS) for each :math:`|g_i>`. 
+The :math:`|g_i>` orbitals are found using the PseudoPotential used for the PW calculation.
 See the projwfc doc see the QE `documentation`_ for more details.
 
-.. _documentation: http://www.quantum-espresso.org/wp-content/uploads/Doc/INPUT_PROJWFC.html
+.. _documentation: https://www.quantum-espresso.org/Doc/INPUT_PROJWFC.html
 
 Supported codes
 ---------------
